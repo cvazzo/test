@@ -1,0 +1,97 @@
+---
+title: "R for Data Science"
+author: "Caroline Vazzoler"
+date: "13 September 2017"
+output: html_document
+---
+
+
+###1. Import Data into R
+#####you take data stored in a file, database, or web API, and load it into a data frame in R
+###2. Tidy Data
+#####tidying your data means storing it in a consistent form that matches the semantics of the dataset with the way it is stored. In brief, when your data is tidy, each column is a variable, and each row is an observation. Tidy data is important because the consistent structure lets you focus your struggle on questions about the data, not fighting to get the data into the right form for different functions.
+###3. Transform Data
+#####Transformation includes narrowing in on observations of interest (like all people in one city, or all data from the last year), creating new variables that are functions of existing variables (like computing velocity from speed and time), and calculating a set of summary statistics (like counts or means). Together, tidying and transforming are called wrangling
+###4.Visualization
+#####A good visualization will show you things that you did not expect, or raise new questions about the data. A good visualization might also hint that you're asking the wrong question, or you need to collect different data.
+###5. Model
+#####Models are complementary tools to visualization. Once you have made your questions sufficiently precise, you can use a model to answer them. Models are a fundamentally mathematical or computational tool, so they generally scale well. Even when they don't, it's usually cheaper to buy more computers than it is to buy more brains! But every model makes assumptions, and by its very nature a model cannot question its own assumptions. That means a model cannot fundamentally surprise you.
+###6. Communication
+#####It doesn't matter how well your models and visualization have led you to understand the data unless you can also communicate your results to others.
+####All of the above- Programming - becoming a better programmer allows you to automate common tasks, and solve new problems with greater ease
+
+```{r include = FALSE}
+library(knitr)
+library(data.table)
+library(TTR)
+library(xts)
+library(tseries)
+library(ggplot2)
+library(gridExtra)
+library(corrplot)
+library(Rblpapi)
+library(plyr)
+library(dygraphs)
+library(formattable)
+library(flexdashboard)
+library(lubridate)
+library(metricsgraphics)
+library(RColorBrewer)
+library(stringr)
+library(SDMTools)
+library(scales)
+library(tidyverse)
+```
+
+```{r graph cars}
+mpg
+ggplot(data = mpg) +
+geom_point(mapping = aes(x = displ, y = hwy))
+
+#ggplot() creates a coordinate saystem that you can add layers to. The first argument is the dataset to use in the graph. You add one or more layers to ggplot(). geom_point() adds a layer of points to your plot, creating a scatterplot.
+#Each geom function in ggplot2 takes a mapping argument. This defines how variables in your dataset are mapped to visual properties. The mapping argument is always paired with aes(), and the x and yarguments of aes() specify which variables to map to the x- and y-axes.ggplot2 looks for the mapped variable in the data argument, in thiscase, mpg.
+
+
+#Reusable template for graphing
+#ggplot(data = <DATA>) +  <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
+
+#You can add a third variable, like class, to a two-dimensional scatterplot by mapping it to an aesthetic. An aesthetic is a visual property of the objects in your plot. Aesthetics include things like the size, the shape, or the color of your points. You can display a point (like the one shown next) in different ways by changing the values of its aesthetic properties. Since we already use the word "value" to describe data, let's use the word "level" to describe aesthetic properties. 
+
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, color = class))
+
+#n this case, the exact size of each point would reveal its class affiliation. We get a warning here, because mapping an unordered variable (class) to an ordered aesthetic (size) is not a good idea
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, size = class))
+
+# Transparency of dots
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, alpha = class))
+
+#Shapes of dots (! only maximum 6 shapes at a time, additional variables will go unused)
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, shape = class))
+
+#Manually setting aesthetic properties of geom manually- make all dots blue
+
+#Here, the color doesn't convey information about a variable, but only changes the appearance of the plot. To set an aesthetic manually, set the aesthetic by name as an argument of your geom function; i.e., it goes outside of aes(). You'll need to pick a value that makes sense for that aesthetic:
+ggplot(data = mpg) +  geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+
+```
+
+```{R Mapping vs Setting example with aes()}
+diamonds
+#Any aesthetic in ggplot2 (such as colour, size, shape, etc.) can be used in two distinct ways in your plots:
+
+#Option 1 - you can use the aesthetic to reflect some properties of your data. For example, clarity of the diamonds, like we did in the first example. This is called MAPPING an aesthetic.Mapping is a more complex process- so aes() is needed to help with having different visual properties
+p <- ggplot(data=diamonds, aes(x=carat, y=price))
+p + geom_point(aes(colour=clarity))
+
+#Option 2 - you can choose a certain value for an aesthetic. For example, make the colour blue for ALL points or make the shape a square for ALL points. This is called SETTING an aesthetic and the keyword here is ALL.  Setting is a "simple" process- you choose a value for everything
+p1 <- ggplot(data=diamonds, aes(x=carat, y=price))
+p1 + geom_point(color="Blue")
+```
+
+
+
+

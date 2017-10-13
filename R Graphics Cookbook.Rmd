@@ -1,0 +1,37 @@
+---
+title: "R Graphics Cookbook"
+author: "Caroline Vazzoler"
+date: "13 September 2017"
+output: html_document
+---
+
+
+```{R}
+library(ggplot2)
+library(gcookbook)
+print(simpledat)
+barplot(simpledat, beside=TRUE)
+
+#To transpose a matrix- goal is to shift variables along x axis
+t(simpledat)
+barplot(t(simpledat), beside=TRUE)
+
+#To plot with lines instead of bars
+#First we call plot(), which tells R to create a new graph and draw a line for one row of data
+plot(simpledat[1,], type="l")
+
+#Then we tell it to draw a second row with lines():
+lines(simpledat[2,], type="l", col="blue")
+```
+
+#ggplot 2
+```{R}
+#With ggplot2, the structure of the data is always the same: it requires a data frame in "long" format, 
+#as opposed to the "wide" format used previously. When the data is in long format, each row represents one item. 
+#Instead of having their groups determined by their positions in the matrix, the items have their groups specified in a separate column. 
+#Here is simpledat, converted to long format:
+
+simpledat_long
+
+
+```
